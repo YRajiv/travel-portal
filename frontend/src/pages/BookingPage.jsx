@@ -32,9 +32,11 @@ export default function BookingPage() {
   useEffect(() => {
     let active = true;
 
-    api.get('/packages')
+    api.get('/packages', { params: { page: 1, limit: 50 } })
       .then((response) => {
-        if (active) setPackages(response.data);
+        const items = Array.isArray(response.data) ? response.data : response.data?.items;
+        if (!Array.isArray(items)) throw new Error('The packages response was invalid.');
+        if (active) setPackages(items);
       })
       .catch((requestError) => {
         if (active) {

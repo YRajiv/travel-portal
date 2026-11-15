@@ -8,6 +8,7 @@
     "dev": "nodemon server.js",
     "create-admin": "node scripts/createAdmin.js",
     "seed:catalog": "node scripts/seedCatalog.js",
+    "seed:india-catalog": "node scripts/seedCatalog.js --india",
     "test": "jest --runInBand"
   },
   "keywords": [],

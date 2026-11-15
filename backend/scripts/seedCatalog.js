@@ -383,11 +383,377 @@ const catalog = [
   },
 ];
 
+const requestedCatalog = [
+  {
+    destination: {
+      name: 'Goa',
+      country: 'India',
+      city: 'Panaji',
+      location: 'Goa, India',
+      category: 'Beach',
+      tag: 'Beach',
+      description: 'Enjoy Goa’s palm-lined beaches, water sports, Portuguese heritage, and lively coastal nightlife.',
+      image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1400&q=85',
+      images: ['https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1400&q=85'],
+      attractions: ['Baga Beach', 'Old Goa', 'Dudhsagar Falls'],
+      bestTimeToVisit: 'November to February',
+      estimatedCost: 18000,
+      rating: 4.7,
+      popularity: 96,
+    },
+    travelPackage: {
+      name: 'Goa Beach Holiday',
+      duration: 3,
+      nights: 2,
+      price: 8999,
+      description: 'A short coastal break with beach time, a North Goa sightseeing tour, and an evening to enjoy the local food scene.',
+      images: ['https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1400&q=85'],
+      includedServices: ['Two nights accommodation', 'Daily breakfast', 'North Goa sightseeing transfer'],
+      excludedServices: ['Flights', 'Water-sport fees', 'Lunch and dinner'],
+      accommodation: 'Comfortable 3-star hotel',
+      transportation: 'Shared airport transfer and one sightseeing transfer',
+      activities: ['Beach visit', 'Old Goa heritage walk', 'Optional water sports'],
+      itinerary: [
+        { day: 1, title: 'Arrival and beach evening', description: 'Check in and spend the evening at a nearby beach.' },
+        { day: 2, title: 'Goa heritage and coast', description: 'Visit Old Goa and enjoy free time on the coast.' },
+        { day: 3, title: 'Leisure and departure', description: 'Enjoy breakfast before checking out.' },
+      ],
+    },
+  },
+  {
+    destination: {
+      name: 'Manali',
+      country: 'India',
+      city: 'Manali',
+      location: 'Himachal Pradesh, India',
+      category: 'Mountains & adventure',
+      tag: 'Mountains & adventure',
+      description: 'Explore Himalayan scenery, cedar forests, snow-season activities, and outdoor adventures around the Kullu Valley.',
+      image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1400&q=85',
+      images: ['https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1400&q=85'],
+      attractions: ['Solang Valley', 'Hadimba Temple', 'Old Manali'],
+      bestTimeToVisit: 'March to June and December to February',
+      estimatedCost: 26000,
+      rating: 4.7,
+      popularity: 92,
+    },
+    travelPackage: {
+      name: 'Manali Adventure Trip',
+      duration: 5,
+      nights: 4,
+      price: 14999,
+      description: 'A five-day valley break combining Manali highlights with time for optional seasonal snow and adventure activities.',
+      images: ['https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1400&q=85'],
+      includedServices: ['Four nights accommodation', 'Daily breakfast', 'Local sightseeing transfers'],
+      excludedServices: ['Travel to Manali', 'Adventure activity fees', 'Lunch and dinner'],
+      accommodation: 'Mountain-view guesthouse',
+      transportation: 'Shared local sightseeing transfers',
+      activities: ['Hadimba Temple visit', 'Solang Valley excursion', 'Old Manali walk', 'Optional snow activities'],
+      itinerary: [
+        { day: 1, title: 'Arrival in Manali', description: 'Check in and enjoy a relaxed evening.' },
+        { day: 2, title: 'Manali heritage', description: 'Visit Hadimba Temple and explore Old Manali.' },
+        { day: 3, title: 'Solang Valley', description: 'Take a valley excursion; optional activities are seasonal and extra.' },
+        { day: 4, title: 'Flexible mountain day', description: 'Enjoy a free day or choose a locally available activity.' },
+        { day: 5, title: 'Departure', description: 'Check out after breakfast.' },
+      ],
+    },
+  },
+  {
+    destination: {
+      name: 'Ooty',
+      country: 'India',
+      city: 'Ooty',
+      location: 'Tamil Nadu, India',
+      category: 'Hill station',
+      tag: 'Hill station',
+      description: 'Unwind among Nilgiri hills, tea gardens, botanical gardens, and scenic viewpoints.',
+      image: 'https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?auto=format&fit=crop&w=1400&q=85',
+      images: ['https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?auto=format&fit=crop&w=1400&q=85'],
+      attractions: ['Nilgiri Mountain Railway', 'Botanical Garden', 'Doddabetta Peak'],
+      bestTimeToVisit: 'October to June',
+      estimatedCost: 16000,
+      rating: 4.5,
+      popularity: 80,
+    },
+    travelPackage: {
+      name: 'Ooty Nature Escape',
+      duration: 3,
+      nights: 2,
+      price: 7499,
+      description: 'A relaxed hill-station stay with tea-country scenery, gardens, and a local sightseeing day.',
+      images: ['https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?auto=format&fit=crop&w=1400&q=85'],
+      includedServices: ['Two nights accommodation', 'Daily breakfast', 'Local sightseeing transfer'],
+      excludedServices: ['Travel to Ooty', 'Nilgiri train tickets', 'Lunch and dinner'],
+      accommodation: 'Hill-station hotel',
+      transportation: 'Shared local sightseeing transfer',
+      activities: ['Tea garden visit', 'Botanical Garden', 'Doddabetta viewpoint'],
+      itinerary: [
+        { day: 1, title: 'Arrival and gardens', description: 'Check in and visit the Botanical Garden.' },
+        { day: 2, title: 'Tea country and viewpoints', description: 'Explore a tea garden and nearby Nilgiri viewpoints.' },
+        { day: 3, title: 'Leisure and departure', description: 'Enjoy breakfast before checking out.' },
+      ],
+    },
+  },
+  {
+    destination: {
+      name: 'Jaipur',
+      country: 'India',
+      city: 'Jaipur',
+      location: 'Rajasthan, India',
+      category: 'Heritage',
+      tag: 'Heritage',
+      description: 'Discover the Pink City’s forts, palaces, colorful bazaars, and enduring Rajasthani traditions.',
+      image: 'https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?auto=format&fit=crop&w=1400&q=85',
+      images: ['https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?auto=format&fit=crop&w=1400&q=85'],
+      attractions: ['Amber Fort', 'Hawa Mahal', 'City Palace'],
+      bestTimeToVisit: 'October to March',
+      estimatedCost: 19000,
+      rating: 4.7,
+      popularity: 88,
+    },
+    travelPackage: {
+      name: 'Jaipur Royal Heritage Tour',
+      duration: 3,
+      nights: 2,
+      price: 9999,
+      description: 'A guided introduction to Jaipur’s royal-era landmarks, old-city streets, and local craft markets.',
+      images: ['https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?auto=format&fit=crop&w=1400&q=85'],
+      includedServices: ['Two nights accommodation', 'Daily breakfast', 'One guided city tour'],
+      excludedServices: ['Flights', 'Monument entry tickets', 'Lunch and dinner'],
+      accommodation: 'Heritage-style city hotel',
+      transportation: 'Shared sightseeing transfer',
+      activities: ['Amber Fort visit', 'Hawa Mahal photo stop', 'Old city market walk'],
+      itinerary: [
+        { day: 1, title: 'Arrival in the Pink City', description: 'Check in and take an evening walk through the old city.' },
+        { day: 2, title: 'Forts and palaces', description: 'Visit Amber Fort and explore Jaipur’s royal landmarks.' },
+        { day: 3, title: 'Local crafts and departure', description: 'Browse a local market before checking out.' },
+      ],
+    },
+  },
+  {
+    destination: {
+      name: 'Kerala',
+      country: 'India',
+      city: 'Alappuzha',
+      location: 'Kerala, India',
+      category: 'Backwaters & nature',
+      tag: 'Backwaters & nature',
+      description: 'Experience Kerala’s tranquil backwaters, houseboat culture, lush landscapes, and distinctive local cuisine.',
+      image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1400&q=85',
+      images: ['https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1400&q=85'],
+      attractions: ['Alappuzha backwaters', 'Kumarakom', 'Fort Kochi'],
+      bestTimeToVisit: 'September to March',
+      estimatedCost: 24000,
+      rating: 4.8,
+      popularity: 93,
+    },
+    travelPackage: {
+      name: 'Kerala Backwater Experience',
+      duration: 4,
+      nights: 3,
+      price: 12999,
+      description: 'A short Kerala escape with a backwater cruise, a houseboat experience, and time to enjoy the surrounding nature.',
+      images: ['https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1400&q=85'],
+      includedServices: ['Three nights accommodation', 'Daily breakfast', 'One shared houseboat cruise'],
+      excludedServices: ['Flights', 'Private houseboat upgrade', 'Lunch and dinner'],
+      accommodation: 'Two nights hotel and one shared houseboat stay',
+      transportation: 'Shared transfers between the hotel and backwaters',
+      activities: ['Backwater cruise', 'Houseboat experience', 'Village scenery'],
+      itinerary: [
+        { day: 1, title: 'Arrival in Kerala', description: 'Check in and enjoy a relaxed evening.' },
+        { day: 2, title: 'Backwater cruise', description: 'Explore the waterways and local villages by boat.' },
+        { day: 3, title: 'Houseboat experience', description: 'Spend the day on a shared houseboat route.' },
+        { day: 4, title: 'Leisure and departure', description: 'Enjoy breakfast before checking out.' },
+      ],
+    },
+  },
+  {
+    destination: {
+      name: 'Hyderabad',
+      country: 'India',
+      city: 'Hyderabad',
+      location: 'Telangana, India',
+      category: 'City & heritage',
+      tag: 'City & heritage',
+      description: 'Explore Hyderabad’s historic monuments, lively bazaars, architecture, and celebrated food culture.',
+      image: 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1400&q=85',
+      images: ['https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1400&q=85'],
+      attractions: ['Charminar', 'Golconda Fort', 'Hussain Sagar'],
+      bestTimeToVisit: 'October to February',
+      estimatedCost: 14000,
+      rating: 4.5,
+      popularity: 82,
+    },
+    travelPackage: {
+      name: 'Hyderabad City Tour',
+      duration: 2,
+      nights: 1,
+      price: 5999,
+      description: 'A compact city break covering Hyderabad’s key historic sights and a taste of its local food scene.',
+      images: ['https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1400&q=85'],
+      includedServices: ['One night accommodation', 'Breakfast', 'Guided old-city walk'],
+      excludedServices: ['Flights', 'Monument entry tickets', 'Lunch and dinner'],
+      accommodation: 'Central 3-star hotel',
+      transportation: 'Shared local sightseeing transfer',
+      activities: ['Charminar visit', 'Old-city bazaar walk', 'Hyderabadi food tasting'],
+      itinerary: [
+        { day: 1, title: 'Old city and local food', description: 'Explore the historic center and sample regional cuisine.' },
+        { day: 2, title: 'Fort and departure', description: 'Visit a local landmark before checking out.' },
+      ],
+    },
+  },
+  {
+    destination: {
+      name: 'Kashmir',
+      country: 'India',
+      city: 'Srinagar',
+      location: 'Jammu and Kashmir, India',
+      category: 'Valleys & mountains',
+      tag: 'Valleys & mountains',
+      description: 'Take in Kashmir’s mountain scenery, quiet lakes, green valleys, and the distinctive atmosphere of Srinagar.',
+      image: 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1400&q=85',
+      images: ['https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1400&q=85'],
+      attractions: ['Dal Lake', 'Mughal Gardens', 'Gulmarg'],
+      bestTimeToVisit: 'March to October',
+      estimatedCost: 36000,
+      rating: 4.8,
+      popularity: 90,
+    },
+    travelPackage: {
+      name: 'Kashmir Valley Experience',
+      duration: 5,
+      nights: 4,
+      price: 19999,
+      description: 'A scenic five-day Kashmir stay with Srinagar highlights, lake time, and an excursion into the surrounding valley.',
+      images: ['https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1400&q=85'],
+      includedServices: ['Four nights accommodation', 'Daily breakfast', 'Srinagar sightseeing transfer'],
+      excludedServices: ['Flights', 'Gulmarg activities and tickets', 'Lunch and dinner'],
+      accommodation: 'Guesthouse in Srinagar',
+      transportation: 'Shared local sightseeing transfers',
+      activities: ['Dal Lake visit', 'Mughal Gardens', 'Valley excursion'],
+      itinerary: [
+        { day: 1, title: 'Arrival in Srinagar', description: 'Check in and enjoy a relaxed evening.' },
+        { day: 2, title: 'Srinagar and Dal Lake', description: 'Explore the lakefront and city highlights.' },
+        { day: 3, title: 'Gardens and local culture', description: 'Visit Srinagar’s historic gardens and markets.' },
+        { day: 4, title: 'Valley excursion', description: 'Take a scenic day trip; activity fees are extra.' },
+        { day: 5, title: 'Departure', description: 'Check out after breakfast.' },
+      ],
+    },
+  },
+  {
+    destination: {
+      name: 'Coorg',
+      country: 'India',
+      city: 'Madikeri',
+      location: 'Karnataka, India',
+      category: 'Coffee & nature',
+      tag: 'Coffee & nature',
+      description: 'Discover misty coffee plantations, forested hills, waterfalls, and the relaxed pace of Kodagu.',
+      image: 'https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1400&q=85',
+      images: ['https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1400&q=85'],
+      attractions: ['Madikeri Fort', 'Abbey Falls', 'Coffee plantations'],
+      bestTimeToVisit: 'October to March',
+      estimatedCost: 17000,
+      rating: 4.6,
+      popularity: 79,
+    },
+    travelPackage: {
+      name: 'Coorg Coffee Plantation Tour',
+      duration: 3,
+      nights: 2,
+      price: 8499,
+      description: 'A nature-focused Coorg break with a coffee plantation visit, waterfall stop, and time in Madikeri.',
+      images: ['https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1400&q=85'],
+      includedServices: ['Two nights accommodation', 'Daily breakfast', 'Coffee plantation visit'],
+      excludedServices: ['Travel to Coorg', 'Lunch and dinner', 'Optional activities'],
+      accommodation: 'Plantation-side homestay',
+      transportation: 'Shared local sightseeing transfer',
+      activities: ['Coffee plantation walk', 'Abbey Falls visit', 'Madikeri sightseeing'],
+      itinerary: [
+        { day: 1, title: 'Arrival in Coorg', description: 'Check in and enjoy the plantation surroundings.' },
+        { day: 2, title: 'Coffee and waterfalls', description: 'Visit a coffee estate and nearby waterfall.' },
+        { day: 3, title: 'Madikeri and departure', description: 'Explore Madikeri before checking out.' },
+      ],
+    },
+  },
+  {
+    destination: {
+      name: 'Agra',
+      country: 'India',
+      city: 'Agra',
+      location: 'Uttar Pradesh, India',
+      category: 'Heritage',
+      tag: 'Heritage',
+      description: 'Visit the Taj Mahal and explore Agra’s Mughal-era architecture, forts, and historic city sights.',
+      image: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1400&q=85',
+      images: ['https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1400&q=85'],
+      attractions: ['Taj Mahal', 'Agra Fort', 'Mehtab Bagh'],
+      bestTimeToVisit: 'October to March',
+      estimatedCost: 12000,
+      rating: 4.8,
+      popularity: 91,
+    },
+    travelPackage: {
+      name: 'Agra Heritage Trip',
+      duration: 2,
+      nights: 1,
+      price: 5499,
+      description: 'A two-day heritage visit centered on the Taj Mahal and Agra’s historic Mughal landmarks.',
+      images: ['https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1400&q=85'],
+      includedServices: ['One night accommodation', 'Breakfast', 'Guided city sightseeing transfer'],
+      excludedServices: ['Travel to Agra', 'Monument entry tickets', 'Lunch and dinner'],
+      accommodation: 'Central budget hotel',
+      transportation: 'Shared local sightseeing transfer',
+      activities: ['Taj Mahal visit', 'Agra Fort visit', 'Mehtab Bagh viewpoint'],
+      itinerary: [
+        { day: 1, title: 'Taj Mahal and Agra Fort', description: 'Visit the Taj Mahal and explore Agra Fort.' },
+        { day: 2, title: 'Local heritage and departure', description: 'Enjoy a final heritage stop before checking out.' },
+      ],
+    },
+  },
+  {
+    destination: {
+      name: 'Rishikesh',
+      country: 'India',
+      city: 'Rishikesh',
+      location: 'Uttarakhand, India',
+      category: 'River & adventure',
+      tag: 'River & adventure',
+      description: 'Experience the Ganges, riverside yoga, foothill scenery, and outdoor adventures in the Himalayan foothills.',
+      image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1400&q=85',
+      images: ['https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1400&q=85'],
+      attractions: ['Lakshman Jhula', 'Triveni Ghat', 'Ganges river rafting'],
+      bestTimeToVisit: 'September to November and March to May',
+      estimatedCost: 18000,
+      rating: 4.7,
+      popularity: 85,
+    },
+    travelPackage: {
+      name: 'Rishikesh Adventure Package',
+      duration: 3,
+      nights: 2,
+      price: 9499,
+      description: 'A short riverside escape combining Rishikesh landmarks, a yoga session, and seasonal adventure options.',
+      images: ['https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1400&q=85'],
+      includedServices: ['Two nights accommodation', 'Daily breakfast', 'One guided yoga session'],
+      excludedServices: ['Travel to Rishikesh', 'Rafting fees', 'Lunch and dinner'],
+      accommodation: 'Riverside guesthouse',
+      transportation: 'Shared local transfers',
+      activities: ['Riverside yoga', 'Ganga Aarti visit', 'Optional river rafting'],
+      itinerary: [
+        { day: 1, title: 'Arrival and riverside walk', description: 'Check in and explore the riverfront.' },
+        { day: 2, title: 'Yoga and adventure', description: 'Join a yoga session; rafting is optional and subject to local conditions.' },
+        { day: 3, title: 'Leisure and departure', description: 'Enjoy breakfast before checking out.' },
+      ],
+    },
+  },
+];
+
 async function findExistingDestination(destination) {
   return Destination.findOne({ name: destination.name, country: destination.country });
 }
 
-async function seedCatalog() {
+async function seedCatalog(entries = catalog) {
   if (!process.env.MONGO_URI) {
     throw new Error('Set MONGO_URI explicitly before running the catalog seed command.');
   }
@@ -398,7 +764,7 @@ async function seedCatalog() {
 
   let destinationsCreated = 0;
   let packagesCreated = 0;
-  for (const entry of catalog) {
+  for (const entry of entries) {
     let destination = await findExistingDestination(entry.destination);
     if (!destination) {
       destination = await Destination.create({ ...entry.destination, isActive: true });
@@ -421,11 +787,12 @@ async function seedCatalog() {
     }
   }
 
-  return { destinationsCreated, packagesCreated, catalogEntries: catalog.length };
+  return { destinationsCreated, packagesCreated, catalogEntries: entries.length };
 }
 
 if (require.main === module) {
-  seedCatalog()
+  const entries = process.argv.includes('--india') ? requestedCatalog : catalog;
+  seedCatalog(entries)
     .then((result) => {
       console.log(`Catalog seed complete: ${result.destinationsCreated} destinations and ${result.packagesCreated} packages inserted; existing records were left unchanged.`);
     })
@@ -438,4 +805,4 @@ if (require.main === module) {
     });
 }
 
-module.exports = { seedCatalog, catalog };
+module.exports = { seedCatalog, catalog, requestedCatalog };

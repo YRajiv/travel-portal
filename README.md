@@ -50,7 +50,7 @@ A --> E[JWT Auth]
 
 When MongoDB is connected, authentication uses MongoDB users instead of these in-memory demo accounts. To create the first MongoDB admin, set `ADMIN_EMAIL` and a strong `ADMIN_PASSWORD` in the local environment and run `npm run create-admin` from `backend`. The command does not create demo catalog or booking records.
 
-The customer destination and package pages read published records from MongoDB. To explicitly add the optional starter catalog, set `MONGO_URI` to the intended database, inspect it, then run `npm run seed:catalog` from `backend`. The seed command is never run by server startup, inserts only missing destination/package pairs, leaves existing records unchanged, and does not create bookings or payments. It requires `MONGO_URI` to be set explicitly.
+The customer destination and package pages read published records from MongoDB. To explicitly add the optional starter catalog, set `MONGO_URI` to the intended database, inspect it, then run `npm run seed:catalog` from `backend`. To add the ten India destinations and packages, run `npm run seed:india-catalog` instead. Both commands are manual, require an explicit `MONGO_URI`, insert only missing destination/package pairs, leave existing records unchanged, and do not create bookings or payments.
 
 ## Docker setup
 ```bash
@@ -72,9 +72,10 @@ npm install
 npm run dev
 npm run test
 npm run seed:catalog
+npm run seed:india-catalog
 ```
 
-Run `npm run seed:catalog` only after confirming `MONGO_URI` points to the intended database. It is an optional one-time catalog insert, not a migration or automatic startup task.
+Run either seed command only after confirming `MONGO_URI` points to the intended database. They are optional, idempotent catalog inserts, not migrations or automatic startup tasks.
 
 ## GitHub push commands
 ```bash
