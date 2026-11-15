@@ -57,6 +57,10 @@ router.put('/:id', protect, authorize('SERVICE_PROVIDER', 'ADMIN'), async (req, 
   }
   const index = demoStore.services.findIndex((s) => s._id === req.params.id);
   if (index === -1) return res.status(404).json({ message: 'Service not found' });
+  if (req.user.role !== 'ADMIN'
+    && String(demoStore.services[index].provider) !== String(req.user._id)) {
+    return res.status(403).json({ message: 'You can only update your own service listings.' });
+  }
   demoStore.services[index] = { ...demoStore.services[index], ...pickServiceFields(req.body) };
   res.json(demoStore.services[index]);
 });

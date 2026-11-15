@@ -24,9 +24,15 @@ afterEach(() => {
 
 describe('Travel Portal API', () => {
   it('returns health status', async () => {
+    mongoose.connection.readyState = 0;
     const response = await request(app).get('/api/health');
     expect(response.status).toBe(200);
     expect(response.body.status).toBe('ok');
+    expect(response.body.database).toBe('disconnected');
+
+    const readiness = await request(app).get('/api/ready');
+    expect(readiness.status).toBe(503);
+    expect(readiness.body.database).toBe('disconnected');
   });
 
   it('registers a customer account', async () => {
@@ -42,6 +48,65 @@ describe('Travel Portal API', () => {
     expect(response.status).toBe(201);
     expect(response.body.user.email).toBe('rhea@test.com');
     expect(response.body.user.role).toBe('CUSTOMER');
+
+    const login = await request(app)
+      .post('/api/auth/login')
+      .send({ email: 'rhea@test.com', password: 'testpass123' });
+
+    expect(login.status).toBe(200);
+    expect(login.body.user.email).toBe('rhea@test.com');
+  });
+
+  it('returns a conflict response when the email is already registered', async () => {
+    const response = await request(app)
+      .post('/api/auth/register')
+      .send({ name: 'Existing Customer', email: 'customer@travelportal.com', password: 'secure-password' });
+
+    expect(response.status).toBe(409);
+    expect(response.body.message).toBe('User already exists');
+  });
+
+  it('does not use demo accounts for registration or login when production MongoDB is unavailable', async () => {
+    const previousNodeEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = 'production';
+    mongoose.connection.readyState = 0;
+
+    try {
+      const registration = await request(app)
+        .post('/api/auth/register')
+        .send({ name: 'Unavailable', email: 'unavailable@test.com', password: 'secure-password' });
+      const login = await request(app)
+        .post('/api/auth/login')
+        .send({ email: 'customer@travelportal.com', password: 'customer123' });
+      const catalog = await request(app).get('/api/destinations');
+
+      expect(registration.status).toBe(503);
+      expect(login.status).toBe(503);
+      expect(catalog.status).toBe(503);
+      expect(registration.body.message).toMatch(/Database is temporarily unavailable/);
+    } finally {
+      process.env.NODE_ENV = previousNodeEnv;
+    }
+  });
+
+  it('handles the registration CORS preflight only for configured origins', async () => {
+    const preflight = await request(app)
+      .options('/api/auth/register')
+      .set('Origin', 'http://localhost:5173')
+      .set('Access-Control-Request-Method', 'POST')
+      .set('Access-Control-Request-Headers', 'authorization,content-type');
+    const disallowed = await request(app)
+      .options('/api/auth/register')
+      .set('Origin', 'https://untrusted.example')
+      .set('Access-Control-Request-Method', 'POST');
+
+    expect(preflight.status).toBe(204);
+    expect(preflight.headers['access-control-allow-origin']).toBe('http://localhost:5173');
+    expect(preflight.headers['access-control-allow-methods']).toContain('POST');
+    expect(preflight.headers['access-control-allow-headers'].toLowerCase()).toContain('authorization');
+    expect(preflight.headers['access-control-allow-headers'].toLowerCase()).toContain('content-type');
+    expect(preflight.headers['access-control-allow-credentials']).toBeUndefined();
+    expect(disallowed.headers['access-control-allow-origin']).toBeUndefined();
   });
 
   it('logs in with valid credentials', async () => {
@@ -54,6 +119,93 @@ describe('Travel Portal API', () => {
 
     expect(response.status).toBe(200);
     expect(response.body.user.role).toBe('CUSTOMER');
+  });
+
+  it('rate limits repeated login and registration attempts per client', async () => {
+    const previousTrustProxy = app.get('trust proxy');
+    app.set('trust proxy', 1);
+
+    try {
+      const registrationResponses = [];
+      for (let attempt = 0; attempt < 11; attempt += 1) {
+        registrationResponses.push(await request(app)
+          .post('/api/auth/register')
+          .set('X-Forwarded-For', '198.51.100.10')
+          .send({}));
+      }
+
+      const loginResponses = [];
+      for (let attempt = 0; attempt < 16; attempt += 1) {
+        loginResponses.push(await request(app)
+          .post('/api/auth/login')
+          .set('X-Forwarded-For', '198.51.100.11')
+          .send({ email: 'rate-limit@test.com', password: 'invalid' }));
+      }
+
+      expect(registrationResponses.slice(0, 10).every((response) => response.status === 400)).toBe(true);
+      expect(registrationResponses[10].status).toBe(429);
+      expect(loginResponses.slice(0, 15).every((response) => response.status === 401)).toBe(true);
+      expect(loginResponses[15].status).toBe(429);
+      expect(loginResponses[15].body.message).toMatch(/Too many authentication attempts/);
+    } finally {
+      app.set('trust proxy', previousTrustProxy);
+    }
+  });
+
+  it('prevents demo customers from updating another customer’s itinerary', async () => {
+    mongoose.connection.readyState = 0;
+    const otherCustomer = {
+      _id: 'other-demo-customer',
+      email: 'other-demo-customer@test.com',
+      role: 'CUSTOMER',
+    };
+    const originalItinerary = demoStore.itineraries[0];
+    const originalTitle = originalItinerary.title;
+    demoStore.users.push(otherCustomer);
+    const token = jwt.sign(
+      { id: otherCustomer._id, email: otherCustomer.email, role: otherCustomer.role },
+      'travel-secret',
+    );
+
+    try {
+      const response = await request(app)
+        .put(`/api/itineraries/${originalItinerary._id}`)
+        .set('Authorization', `Bearer ${token}`)
+        .send({ title: 'Unauthorized update', days: [{ day: 1, plan: 'Should not be saved.' }] });
+
+      expect(response.status).toBe(404);
+      expect(originalItinerary.title).toBe(originalTitle);
+    } finally {
+      demoStore.users = demoStore.users.filter((user) => user._id !== otherCustomer._id);
+    }
+  });
+
+  it('prevents demo service providers from updating another provider’s service', async () => {
+    mongoose.connection.readyState = 0;
+    const otherProvider = {
+      _id: 'other-demo-provider',
+      email: 'other-demo-provider@test.com',
+      role: 'SERVICE_PROVIDER',
+    };
+    const originalService = demoStore.services[0];
+    const originalName = originalService.name;
+    demoStore.users.push(otherProvider);
+    const token = jwt.sign(
+      { id: otherProvider._id, email: otherProvider.email, role: otherProvider.role },
+      'travel-secret',
+    );
+
+    try {
+      const response = await request(app)
+        .put(`/api/services/${originalService._id}`)
+        .set('Authorization', `Bearer ${token}`)
+        .send({ name: 'Unauthorized update' });
+
+      expect(response.status).toBe(403);
+      expect(originalService.name).toBe(originalName);
+    } finally {
+      demoStore.users = demoStore.users.filter((user) => user._id !== otherProvider._id);
+    }
   });
 
   it('keeps new bookings assigned to the authenticated customer', async () => {
@@ -653,13 +805,31 @@ describe('Mongo-backed booking and payment persistence', () => {
       email: 'persisted@test.com',
       role: 'CUSTOMER',
     }));
+    expect(createUser.mock.calls[0][0].password).not.toBe('secure-password');
     expect(response.body.user.role).toBe('CUSTOMER');
     expect(response.body.user.password).toBeUndefined();
+  });
+
+  it('returns a conflict when Mongo rejects a duplicate registration race', async () => {
+    jest.spyOn(User, 'findOne').mockResolvedValue(null);
+    jest.spyOn(User, 'create').mockRejectedValue(Object.assign(new Error('duplicate key'), { code: 11000 }));
+
+    const response = await request(app)
+      .post('/api/auth/register')
+      .send({ name: 'Concurrent Customer', email: 'persisted@test.com', password: 'secure-password' });
+
+    expect(response.status).toBe(409);
+    expect(response.body.message).toBe('User already exists');
   });
 
   it('rejects invalid email addresses and short passwords before writing users', async () => {
     const findUser = jest.spyOn(User, 'findOne');
     const createUser = jest.spyOn(User, 'create');
+    const missingFields = await request(app).post('/api/auth/register');
+    const malformedJson = await request(app)
+      .post('/api/auth/register')
+      .set('Content-Type', 'application/json')
+      .send('{');
     const invalidEmail = await request(app)
       .post('/api/auth/register')
       .send({ name: 'Invalid', email: 'not-an-email', password: 'long-enough-password' });
@@ -667,6 +837,8 @@ describe('Mongo-backed booking and payment persistence', () => {
       .post('/api/auth/register')
       .send({ name: 'Invalid', email: 'valid@example.test', password: 'short' });
 
+    expect(missingFields.status).toBe(400);
+    expect(malformedJson.status).toBe(400);
     expect(invalidEmail.status).toBe(400);
     expect(shortPassword.status).toBe(400);
     expect(findUser).not.toHaveBeenCalled();

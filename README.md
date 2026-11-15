@@ -91,6 +91,10 @@ git push -u origin main
 - Deploy frontend to Vercel or Netlify.
 - Deploy backend to Render, Railway, or a VPS.
 - Configure environment variables in the hosting platform.
+- Set `VITE_API_URL` in the frontend build environment to the backend API URL ending in `/api` (for example, `https://travel-portal-bkzc.onrender.com/api`).
+- Set backend `NODE_ENV=production`, `MONGO_URI`, `JWT_SECRET` (at least 32 characters), and `CLIENT_URL`. `CLIENT_URL` must be the exact frontend origin (scheme and hostname, no path); multiple allowed origins may be comma-separated. Use the stable Vercel production domain rather than a temporary deployment URL. The API uses bearer tokens, not cookies.
+- Docker frontend builds require a `VITE_API_URL` build argument; the Docker Compose development configuration supplies the local API URL.
+- Use `/api/health` for liveness and `/api/ready` for MongoDB readiness.
 
 ## Testing
 ```bash

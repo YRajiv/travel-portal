@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
+const { isProduction } = require('../config/runtime');
 const { demoStore } = require('../utils/demoStore');
 const User = require('../models/User');
 
@@ -16,6 +17,10 @@ const protect = async (req, res, next) => {
     decoded = jwt.verify(token, process.env.JWT_SECRET || 'travel-secret');
   } catch (error) {
     return res.status(401).json({ message: 'Token invalid' });
+  }
+
+  if (isProduction() && mongoose.connection.readyState !== 1) {
+    return res.status(503).json({ message: 'Database is temporarily unavailable. Please try again later.' });
   }
 
   if (mongoose.connection.readyState === 1) {

@@ -1,6 +1,13 @@
+const { isProduction } = require('../config/runtime');
+
 const errorHandler = (err, req, res, next) => {
   let statusCode = res.statusCode !== 200 ? res.statusCode : 500;
   let message = err.message || 'Something went wrong';
+  const errorStatus = err.status || err.statusCode;
+
+  if (Number.isInteger(errorStatus) && errorStatus >= 400 && errorStatus < 600) {
+    statusCode = errorStatus;
+  }
 
   if (err.name === 'ValidationError' || err.name === 'CastError') {
     statusCode = 400;
@@ -14,7 +21,7 @@ const errorHandler = (err, req, res, next) => {
 
   res.status(statusCode).json({
     message,
-    stack: process.env.NODE_ENV === 'production' ? undefined : err.stack,
+    stack: isProduction() ? undefined : err.stack,
   });
 };
 

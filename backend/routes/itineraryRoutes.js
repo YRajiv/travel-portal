@@ -81,8 +81,15 @@ router.put('/:id', protect, authorize('TRAVEL_AGENT', 'ADMIN', 'CUSTOMER'), asyn
 
   const index = demoStore.itineraries.findIndex((i) => i._id === req.params.id);
   if (index === -1) return res.status(404).json({ message: 'Itinerary not found' });
+  const itinerary = demoStore.itineraries[index];
+  if (req.user.role === 'CUSTOMER'
+    && !demoStore.bookings.some((booking) => (
+      booking._id === itinerary.booking && booking.customer === req.user._id
+    ))) {
+    return res.status(404).json({ message: 'Itinerary not found' });
+  }
   demoStore.itineraries[index] = {
-    ...demoStore.itineraries[index],
+    ...itinerary,
     title: title.trim(),
     days: days.map((day) => ({ day: Number(day.day), plan: day.plan.trim() })),
   };
